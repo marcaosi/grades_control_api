@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { promisify } from 'util'
+import { promisify, isNumber } from 'util'
 
 const readFile = promisify(fs.readFile)
 
@@ -32,8 +32,16 @@ const GradeModel = {
 
         return grades
     },
-    findOne: (id) => {
+    findOne: async (id) => {
+        if (!isNumber(id)){
+            throw new Error("O campo id deve ser um número.")
+        }
+        const db = await getDataBase()
+        let grades = db.grades
 
+        const grade = grades.filter(grade => grade.id === id)
+
+        return grade
     },
     remove: (id) => {
 
