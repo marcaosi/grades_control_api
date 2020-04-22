@@ -4,7 +4,7 @@
   "description": "Grades control to a school",
   "main": "src/app.js",
   "scripts": {
-    "start": "nodemon --exec babel-node src/app.js"
+    "start": "nodemon --ignore database.json --exec babel-node src/app.js"
   },
   "author": "Marcos Antonio dos Santos",
   "license": "ISC",
