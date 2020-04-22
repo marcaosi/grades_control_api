@@ -16,9 +16,17 @@ app.get('/grade', async (req, res) => {
 })
 
 app.get('/grade/:id', async (req, res) => {
-    const grade = await model.findOne(req.param.id)
-
-    res.send(JSON.stringify(grade))
+    try{
+        const grade = await model.findOne(req.params.id)
+        
+        if(grade.length > 0)
+            res.send(JSON.stringify(grade))
+        else
+            res.status(204).send()
+    }catch(err){
+        console.log(err)
+        res.status(400).send(err.message)
+    }
 })
 
 app.post('/grade', async (req, res) => {

@@ -83,13 +83,14 @@ const GradeModel = {
         return grades
     },
     findOne: async (id) => {
+        id = parseInt(id, 10)
         if (!isNumber(id)){
             throw new Error("O campo id deve ser um número.")
         }
         const db = await getDataBase()
         let grades = db.grades
 
-        const grade = grades.filter(grade => grade.id === id)
+        const grade = grades.filter(grade => parseInt(grade.id) === id)
 
         return grade
     },
