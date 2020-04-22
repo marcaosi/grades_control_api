@@ -106,8 +106,13 @@ const GradeModel = {
 
         return grade
     },
-    remove: (id) => {
+    remove: async (id) => {
+        const db = await getDataBase()
+        let grades = db.grades
 
+        db.grades = grades.filter(grade => parseInt(grade.id) !== parseInt(id))
+
+        setDataBase(db)
     }
 }
 

@@ -63,6 +63,17 @@ app.put('/grade', async (req, res) => {
         res.status(400).send(err.message)
     }
 })
+
+app.delete('/grade/:id', async (req, res) => {
+    try{
+        await model.remove(req.params.id)
+        
+        res.status(204).send()
+    }catch(err){
+        console.log(err)
+        res.status(400).send(err.message)
+    }
+})
   
 app.listen(3000, () => {
     console.log('API runing on port 3000!');
