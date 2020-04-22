@@ -14,25 +14,25 @@ const setDataBase = async (data) => {
 }
 
 const validateFunctions = {
-    required : (value) => {
+    required : (value, cb) => {
         if(value != undefined && value != null && value != ""){
             return true
         }else{
-            throw new Error("Campo vazio.")
+            cb("Campo vazio.")
         }
     },
-    string: (value) => {
+    string: (value, cb) => {
         if (typeof value === "string"){
             return true
         }else {
-            throw new Error("Campo deve ser uma string.")
+            cb("Campo deve ser uma string.")
         }
     },
-    number: (value) => {
+    number: (value, cb) => {
         if(typeof value === "number"){
             return true
         }else{
-            throw new Error("Campo deve ser um número.")
+            cb("Campo deve ser um número.")
         }
     }
 }
@@ -68,7 +68,12 @@ const GradeModel = {
                     throw new Error("Validação não é possível.")
                 }
 
-                validationFunction(grade[field])
+                validationFunction(grade[field], (msg) => {
+                    throw new Error(JSON.stringify({
+                        field,
+                        error: msg
+                    }))
+                })
             })
         })
     },
