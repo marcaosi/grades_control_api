@@ -40,11 +40,18 @@ const validateFunctions = {
 const GradeModel = {
     save: async (grade) => {
         const db = await getDataBase()
-        grade.id = db.nextId++
-        grade.timestamps = new Date()
-        db.grades.push(grade)
+        if(grade.id){
+            const oldGradeIndex = db.grades.findIndex(g => parseInt(g.id) === parseInt(grade.id))
+            db.grades[oldGradeIndex] = grade
+        }else{
+            grade.id = db.nextId++
+            grade.timestamps = new Date()
+            db.grades.push(grade)
+        }
 
         setDataBase(db)
+
+        return grade
     },
     validate: (grade, criteria = []) => {
         if(!grade){

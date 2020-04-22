@@ -45,6 +45,24 @@ app.post('/grade', async (req, res) => {
         res.status(400).send(JSON.stringify({err: err.message}))
     }
 })
+
+app.put('/grade', async (req, res) => {
+    try{
+        model.validate(req.body, [
+            ["student", "required|string"],
+            ["subject", "required|string"],
+            ["type"   , "required|string"],
+            ["value"  , "required|number"],
+            ["id", "required|number"]
+        ])
+        const grade = await model.save(req.body)
+    
+        res.send(JSON.stringify(grade))
+    }catch(err){
+        console.log(err)
+        res.status(400).send(err.message)
+    }
+})
   
 app.listen(3000, () => {
     console.log('API runing on port 3000!');
