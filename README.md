@@ -6,6 +6,7 @@ This project was developed to an exercise to course of fullstack development at 
 # Getting started
 
 run npm i
+
 run npm start
 
 # credits
