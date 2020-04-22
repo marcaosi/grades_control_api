@@ -1,5 +1,5 @@
 import express from 'express'
-import model from './model/Grade'
+import routerGrade from './router/grade'
 
 const app = express()
 
@@ -9,72 +9,8 @@ app.get('/', (req, res) => {
     res.send('Grades Control API. Welcome!');
 });
 
-app.get('/grade', async (req, res) => {
-    const grades = await model.find()
+app.use('/grade', routerGrade)
 
-    res.send(JSON.stringify(grades))
-})
-
-app.get('/grade/:id', async (req, res) => {
-    try{
-        const grade = await model.findOne(req.params.id)
-        
-        if(grade.length > 0)
-            res.send(JSON.stringify(grade))
-        else
-            res.status(204).send()
-    }catch(err){
-        console.log(err)
-        res.status(400).send(err.message)
-    }
-})
-
-app.post('/grade', async (req, res) => {
-    try{
-        model.validate(req.body, [
-            ["student", "required|string"],
-            ["subject", "required|string"],
-            ["type"   , "required|string"],
-            ["value"  , "required|number"]
-        ])
-        const grade = await model.save(req.body)
-    
-        res.send(JSON.stringify(grade))
-    }catch(err){
-        console.log(err.message)
-        res.status(400).send(JSON.stringify({err: err.message}))
-    }
-})
-
-app.put('/grade', async (req, res) => {
-    try{
-        model.validate(req.body, [
-            ["student", "required|string"],
-            ["subject", "required|string"],
-            ["type"   , "required|string"],
-            ["value"  , "required|number"],
-            ["id", "required|number"]
-        ])
-        const grade = await model.save(req.body)
-    
-        res.send(JSON.stringify(grade))
-    }catch(err){
-        console.log(err)
-        res.status(400).send(err.message)
-    }
-})
-
-app.delete('/grade/:id', async (req, res) => {
-    try{
-        await model.remove(req.params.id)
-        
-        res.status(204).send()
-    }catch(err){
-        console.log(err)
-        res.status(400).send(err.message)
-    }
-})
-  
 app.listen(3000, () => {
     console.log('API runing on port 3000!');
 });
